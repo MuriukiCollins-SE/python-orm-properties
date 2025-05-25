@@ -10,9 +10,9 @@ class Employee:
 
     def __init__(self, name, job_title, department_id, id=None):
         self.id = id
-        self.name = name
-        self.job_title = job_title
-        self.department_id = department_id
+        self.name = name  # will use property setter
+        self.job_title = job_title  # will use property setter
+        self.department_id = department_id  # will use property setter
 
     def __repr__(self):
         return (
@@ -147,3 +147,39 @@ class Employee:
 
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        if not isinstance(value, str):
+            raise ValueError("name must be a string")
+        if len(value) == 0:
+            raise ValueError("name must be a non-empty string")
+        self._name = value
+
+    @property
+    def job_title(self):
+        return self._job_title
+
+    @job_title.setter
+    def job_title(self, value):
+        if not isinstance(value, str):
+            raise ValueError("job_title must be a string")
+        if len(value) == 0:
+            raise ValueError("job_title must be a non-empty string")
+        self._job_title = value
+
+    @property
+    def department_id(self):
+        return self._department_id
+
+    @department_id.setter
+    def department_id(self, value):
+        if not isinstance(value, int):
+            raise ValueError("department_id must be an integer")
+        if Department.find_by_id(value) is None:
+            raise ValueError("department_id must reference an existing Department")
+        self._department_id = value

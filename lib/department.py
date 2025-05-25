@@ -9,8 +9,8 @@ class Department:
 
     def __init__(self, name, location, id=None):
         self.id = id
-        self.name = name
-        self.location = location
+        self.name = name  # will use property setter
+        self.location = location  # will use property setter
 
     def __repr__(self):
         return f"<Department {self.id}: {self.name}, {self.location}>"
@@ -152,3 +152,27 @@ class Department:
         return [
             Employee.instance_from_db(row) for row in rows
         ]
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        if not isinstance(value, str):
+            raise ValueError("name must be a string")
+        if len(value) == 0:
+            raise ValueError("name must be a non-empty string")
+        self._name = value
+
+    @property
+    def location(self):
+        return self._location
+
+    @location.setter
+    def location(self, value):
+        if not isinstance(value, str):
+            raise ValueError("location must be a string")
+        if len(value) == 0:
+            raise ValueError("location must be a non-empty string")
+        self._location = value
